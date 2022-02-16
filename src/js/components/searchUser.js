@@ -29,10 +29,24 @@ import api from '../services/api-service';
 
 const getUserData = evt => {
   evt.preventDefault();
+  const userName = evt.currentTarget.elements.name.value.trim();
+  if (!userName) {
+    alert('enter name');
+    return;
+  }
+  api.userName = userName;
+  api.getUserByName().then(printResult).catch(handleError);
 };
 
-const printResult = user => {};
+const printResult = user => {
+  const markup = makeUserMarkup(user);
+  refs.searchResult.innerHTML = markup;
+  refs.searchError.textContent = '';
+};
 
-const handleError = err => {};
+const handleError = err => {
+  refs.searchResult.innerHTML = '';
+  refs.searchError.textContent = err.message;
+};
 
 refs.form.addEventListener('submit', getUserData);

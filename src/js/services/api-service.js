@@ -13,7 +13,51 @@
  * Сразу создать экземпляр и экспортить его
  */
 
-class ApiService {}
+class ApiService {
+
+    static BASE_URL = 'https://api.github.com';
+    #userName = '';
+    #per_page = 5;
+    userId = 0;
+
+
+    getUsersList() {
+        const params = new URLSearchParams({
+            since: this.userId,
+            per_page: this.per_page,
+        });
+        return fetch(`${ApiServise.BASE_URL}/users?${params}`).then(res => {
+            if (res.status === 404) {
+                return Promise.reject(new Error('Not found'));
+            }
+            return res.json();
+        }).then(users => {
+            this.userId = users.at(-1).id;
+            return users;
+        })
+    }
+
+    getUserByName() {
+
+        return fetch(`${ApiServise.BASE_URL}/users/${this.#userName}`).then(res => {
+        if (res.status === 404) {
+        return Promise.reject(new Error('Not found'));
+        }
+        return res.json();
+        });
+    }
+    
+    set userName(value) {
+        this.#userName = value;
+    }
+    set perPage(value) {
+        this.#per_page = value;
+    }
+
+    resetUserId() {
+        userId = 0;
+    }
+}
 
 const api = new ApiService();
 

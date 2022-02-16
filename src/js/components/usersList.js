@@ -53,18 +53,53 @@ const loadMoreBtn = new LoadMoreBtn({
   hidden: true,
 });
 
-const getFirstUsers = () => {};
+const getFirstUsers = () => {
+  api.resetUserId();
+  refs.listTable.innerHTML = '';
+  loadMoreBtn.hide();
+  getUsers();
+};
 
-getFirstUsers();
 
-const getUsers = () => {};
 
-const renderUsers = users => {};
+const getUsers = () => {
+  loadMoreBtn.disable();
 
-const renderError = err => {};
+  api.getUsersList().then(users =>
+    {renderUsers(users);
+  loadMoreBtn.show();
+  loadMoreBtn.enable();
+  }).catch(err => {
+    renderError(err);
+    loadMoreBtn.hide();
+  })
+};
 
-const onPerPageChange = e => {};
+const renderUsers = users => {
+  const markup = createMarkup(users);
+  refs.listTable.insertAdjacentHTML('beforebegin', markup);
+  refs.listError.textContent = '';
+};
+
+const renderError = err => {
+  refs.listTable.innerHTML = "";
+  refs.listError.textContent = err.message;
+};
+
+const onPerPageChange = e => {
+  api.perPage = e.target.value;
+  getFirstUsers();
+};
 
 refs.listContainer.addEventListener('change', onPerPageChange);
 
+loadMoreBtn.refs.button.addEventListener('click', getUsers);
+
+getFirstUsers();
+
+
+
+
+
+refs.listContainer.addEventListener('change', onPerPageChange);
 loadMoreBtn.refs.button.addEventListener('click', getUsers);
