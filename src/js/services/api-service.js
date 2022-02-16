@@ -19,7 +19,7 @@ class ApiServise{
   #API_KEY = '99164fc3e2a8208f1f5e9fb36b0f2eb5';
   static base_url = "https://api.themoviedb.org/3";
   #page = 1;
-  endpoint = '/movie/upcoming';
+  endpoint = 'movie/upcoming';
   // метод
   fetchMovies() {
     // используем специальный класс URLSearchParams
@@ -27,34 +27,41 @@ class ApiServise{
       api_key: this.#API_KEY,
       page: this.#page,
     })
-    fetch(`${ApiServise.base_url}/${endpoint}?${queryParams}`).then(response =>response.json)
+    return fetch(`${ApiServise.base_url}/${this.endpoint}?${queryParams}`).then(response => {
+      if (response.status === 404) {
+        return Promise.reject(new Error('Not found'))
+      }
+      return response.json();
+    })
   }
 }
+
+
 export default ApiServise;
 
 
 
-infScroll.on('load', function (data) {
-  // use element to turn HTML string into elements
-  const proxyElem = document.createElement('div');
-  // compile data into HTML
-  const markup = makeMoviesMarkup(data.results);
-  // convert HTML string into elements
-  proxyElem.innerHTML = markup;
-  // append item elements
-  const movieCards = proxyElem.querySelectorAll('.movie-card');
-  infScroll.appendItems(movieCards);
-});
+// infScroll.on('load', function (data) {
+//   // use element to turn HTML string into elements
+//   const proxyElem = document.createElement('div');
+//   // compile data into HTML
+//   const markup = makeMoviesMarkup(data.results);
+//   // convert HTML string into elements
+//   proxyElem.innerHTML = markup;
+//   // append item elements
+//   const movieCards = proxyElem.querySelectorAll('.movie-card');
+//   infScroll.appendItems(movieCards);
+// });
 
 
 
-async function onScroll() {
-  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-  const { height: cardHeight } = refs.gallery.firstElementChild.getBoundingClientRect();
+// async function onScroll() {
+//   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+//   const { height: cardHeight } = refs.gallery.firstElementChild.getBoundingClientRect();
 
-  // scroll starts to execute on 1 card height and less from bottom of document
-  if (scrollTop + clientHeight < scrollHeight - cardHeight) {
-    return;
-  }
-  await loadMore();
-}
+//   // scroll starts to execute on 1 card height and less from bottom of document
+//   if (scrollTop + clientHeight < scrollHeight - cardHeight) {
+//     return;
+//   }
+//   await loadMore();
+// }

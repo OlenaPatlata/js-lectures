@@ -78,7 +78,14 @@
 
 import ApiServise from './services/api-service';
 import refs from './services/refs';
+import makeMoviesMarkup from './components/moviesMarkup';
 
-
+// Создали экземпляр класса
 const api = new ApiServise();
+
+api.fetchMovies().then(data => console.log(data));
+
+const renderMovies = movies => {
+  const markup = makeMoviesMarkup(movies);
+}
 

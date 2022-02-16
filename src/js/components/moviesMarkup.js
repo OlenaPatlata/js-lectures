@@ -14,3 +14,24 @@ const cardSample = `
     <h5>Shang-Chi and the Legend of the Ten Rings</h5>
     <p>2021</p>
   </div>`;
+
+
+
+const makeMoviesMarkup = movies => {
+  movies.map(({ title, release_date, poster_path, popularity }) =>    `
+  <div class="movie-card">
+    <img
+      src="https://image.tmdb.org/t/p/w500${poster_path}"
+      alt="${title}"
+      width="220"
+      height="330"
+    />
+    <h5>${title}</h5>
+    <p>${release_date}</p>
+  </div>`
+  
+  ).join('');
+    
+}
+  
+export default makeMoviesMarkup;
