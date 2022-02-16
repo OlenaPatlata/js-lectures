@@ -20,7 +20,9 @@ class ApiServise{
   static base_url = "https://api.themoviedb.org/3";
   #page = 1;
   endpoint = '/movie/upcoming';
+  // метод
   fetchMovies() {
+    // используем специальный класс URLSearchParams
     const queryParams = new URLSearchParams({
       api_key: this.#API_KEY,
       page: this.#page,
@@ -28,7 +30,7 @@ class ApiServise{
     fetch(`${ApiServise.base_url}/${endpoint}?${queryParams}`).then(response =>response.json)
   }
 }
-
+export default ApiServise;
 
 
 
