@@ -48,7 +48,11 @@ const saveUser = user => {};
 // Написать функцию editUser, которая делает PATCH запрос на сервер, чтобы изменить определенные данные у юзера по id
 // Добавить обработку ошибки, если юзера с данным id не существует
 
-const editUser = (id, data) => {};
+// const editUser = (id, data) => {
+//     const options = {
+//         method: 
+//     }
+// };
 
 // index.js
 
