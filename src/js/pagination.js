@@ -81,27 +81,23 @@ import makeMoviesMarkup from './components/moviesMarkup';
 const api = new ApiService({ endpoint: 'movie/upcoming' });
 const loadMoreBtn = new BtnService({ selector: '[data-action="load-more"]', hidden: true });
 
-const getMovies = () => {
-  // refs.loadMoreBtn.disabled = true;
+const getMovies = async() => {
   loadMoreBtn.disable();
-  api
-    .fetchMovies()
-    .then(data => {
-      renderMovies(data.results);
-      loadMoreBtn.show();
-      loadMoreBtn.enable();
-      // refs.loadMoreBtn.classList.remove('is-hidden');
-      // refs.loadMoreBtn.disabled = false;
-
-      if (data.page >= data.total_pages) {
-        loadMoreBtn.hide();
-        // refs.loadMoreBtn.classList.add('is-hidden');
-        setTimeout(() => {
+  try {
+    const {results, page, total_pages: totalPages} = await api
+      .fetchMovies();
+    renderMovies(data.results);
+    loadMoreBtn.show();
+    loadMoreBtn.enable();
+    if (data.page >= data.total_pages) {
+      loadMoreBtn.hide();
+      setTimeout(() => {
           alert('This is the last page');
         }, 500);
-      }
-    })
-    .catch(handleError);
+    }
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 const handleError = err => {

@@ -27,19 +27,33 @@ class ApiService {
     this.#endpoint = endpoint;
   }
 
-  fetchMovies() {
+  // fetchMovies() {
+  //   const queryParams = new URLSearchParams({
+  //     api_key: this.#API_KEY,
+  //     page: this.#page,
+  //   });
+
+  //   return fetch(`${ApiService.BASE_URL}/${this.#endpoint}?${queryParams}`).then(res => {
+  //     if (res.status === 404) {
+  //       return Promise.reject(new Error('Not found'));
+  //     }
+  //     return res.json();
+  //   });
+  // }
+
+
+ async fetchMovies() {
     const queryParams = new URLSearchParams({
       api_key: this.#API_KEY,
       page: this.#page,
     });
-
-    return fetch(`${ApiService.BASE_URL}/${this.#endpoint}?${queryParams}`).then(res => {
-      if (res.status === 404) {
+    const url = `${ApiService.BASE_URL}/${this.#endpoint}?${queryParams}`;
+    const res = await fetch(url);
+    if (res.status === 404) {
         return Promise.reject(new Error('Not found'));
       }
-      return res.json();
-    });
-  }
+    return res.json();
+}
 
   incrementPage() {
     this.#page += 1;
